@@ -1,9 +1,21 @@
-from flask_restx import Namespace, Resource
+from gzip import READ
+from flask_restx import Resource, fields
 import services.user as user_service
+from api import api
 
-ns = Namespace("User", path="/user", description="CRUD for User")
+ns = api.namespace("user", title="User",description="CRUD for User")
 
-class UserList(Resource):
+model = api.model('User', {
+    'name' : fields.String,
+    'email' : fields.String
+})
+
+@ns.route('')
+class User(Resource):
     def get(self):
         return user_service.getAll()
+
+    @api.marshal_with(model)
+    def post(self, user):
+        return user_service.save(user)
         

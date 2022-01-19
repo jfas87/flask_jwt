@@ -10,7 +10,8 @@ def save(user):
     else:
         db.session.add(user)
     db.session.commit()
-    return user_schema.dump(user)
+    # return user_schema.dump(user)
+    return user
 
 def getAll():
     return user_schema_list.dump(User.query.all())
