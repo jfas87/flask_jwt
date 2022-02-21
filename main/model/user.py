@@ -6,3 +6,4 @@ class User(db.Model):
     id = Column(Integer, primary_key = True)
     name = Column(String)
     email = Column(String)
+    pswd = Column(String)
