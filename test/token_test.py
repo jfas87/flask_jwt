@@ -1,20 +1,17 @@
 from requests import post
 
-base_url = 'http://server:port/token'
-#must be tested with the flask api running
+base_url = 'http://server:port/token/'
 
-payload_encode = '' #user json data
+payload_encode = '' #user json
 
-token = '' #token string valye
+token_s = '' #token_Value
 
-payload_decode = '' #token value in json format
+payload_decode = '' #json with token value
 
-def test_answer():
-    response = post(url = base_url + "/encode", data = payload_encode)
-    api_encoded_token = response.json()
-    assert token != api_encoded_token
+def test_tokend_encode():
+    r = post(url = base_url + 'encode', json = payload_encode)
+    assert token_s == r.json()
 
-def test_answer_2():
-    response = post(url = base_url + "/encode", data = payload_decode)
-    api_decoded_token = response.json()
-    assert payload_decode != api_decoded_token
+def test_tokend_decode():
+    r = post(url = base_url + 'decode', json = payload_decode)
+    assert payload_encode == r.json()
