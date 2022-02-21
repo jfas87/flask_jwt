@@ -21,5 +21,5 @@ class User(Resource):
         try:
             return user_service.save(api.payload), 200
         except BaseException as e:
-            return e, 400
+            return '{} - {} - {}'.format(type(e), e.args,e), 400
         
