@@ -17,6 +17,10 @@ def save(data):
 def getAll():
     return user_schema_list.dump(User.query.all())
 
+def getBy(id):
+    r = User.query.where(User.id == id).first()
+    return user_schema.dump(r)
+
 def validate_user(user):
-    # db.session. verificar dados de usuário.    
+    # db.session. verificar dados de usuário.
     return True
