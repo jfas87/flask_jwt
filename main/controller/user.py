@@ -1,27 +1,18 @@
-from flask_restx import Resource, fields, reqparse
+from flask_restx import Resource, reqparse
 import services.user as user_service
+from controller.model import user_model
 from api import api
-import logging
-from model.user import UserTypeEnum
+# import logging
 
 ns = api.namespace("user", title="User",description="CRUD for User")
 
-model = api.model('user', {
-    'name' : fields.String,
-    'email' : fields.String,
-    'pswd' : fields.String,
-    'user_type' : fields.String(description="User type", enum=[x.name for x in UserTypeEnum])
-})
-
 parser = reqparse.RequestParser()
 parser.add_argument('id')
-parser.add_argument('email')
-parser.add_argument('name')
 
 @ns.route('')
 class User(Resource):
 
-    @api.marshal_list_with(model)
+    @api.marshal_list_with(user_model)
     def get(self):        
         try:
             args = parser.parse_args()
@@ -35,7 +26,7 @@ class User(Resource):
             err_s = '{} - {} - {}'.format(type(e), e.args,e)
             return {'error':err_s}, 400
 
-    
+    @api.marshal_with(user_model)
     def post(self):
         try:
             return user_service.create_user(api.payload), 200
