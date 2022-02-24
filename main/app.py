@@ -3,7 +3,7 @@ from db import init_db
 from ma import init_ma
 from controller.user import ns as ns_user
 from controller.token import ns as ns_auth
-from controller.validation import ns as ns_validate
+from controller.auth import ns as ns_validate
 import logging
 
 
