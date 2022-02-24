@@ -1,26 +1,17 @@
-from flask_restx import Resource, fields
-from api import api 
-from services.auth import token_encode, token_decode
-ns = api.namespace('token', description= 'JWT Token validation. Must be used just for tests and QA.')
+from flask_restx import Resource
+from api import api
+from controller.model import user_model
+from services.user import validate_user
 
+ns = api.namespace('auth', description= 'Manage JWT Token')
 
-@ns.route('/encode')
-class TokenEncode(Resource):
+@ns.route('/user')
+class AuthUser(Resource):
 
+    @api.marshal_with(user_model)
     def post(self):
         try:
-            return token_encode(api.payload), 200
+            return validate_user(api.payload), 200
         except BaseException as e:
             err_s = '{} - {} - {}'.format(type(e), e.args,e)
-            return {'error':err_s}, 400
-
-
-@ns.route('/decode')
-class TokenDecode(Resource):
-
-    def post(self):
-        try:
-            return token_decode(api.payload), 200
-        except BaseException as e:
-            err_s = '{} - {} - {}'.format(type(e), e.args,e)
-            return {'error':err_s}, 400
+            return { 'error' : err_s }, 400
