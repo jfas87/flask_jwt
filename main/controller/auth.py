@@ -11,7 +11,8 @@ class TokenEncode(Resource):
         try:
             return token_encode(api.payload), 200
         except BaseException as e:
-            return '{} - {} - {}'.format(type(e), e.args,e), 400
+            err_s = '{} - {} - {}'.format(type(e), e.args,e)
+            return {'error':err_s}, 400
 
 
 @ns.route('/decode')
@@ -21,4 +22,5 @@ class TokenDecode(Resource):
         try:
             return token_decode(api.payload), 200
         except BaseException as e:
-            return '{} - {} - {}'.format(type(e), e.args,e), 400
+            err_s = '{} - {} - {}'.format(type(e), e.args,e)
+            return {'error':err_s}, 400
