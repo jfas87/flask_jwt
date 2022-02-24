@@ -1,7 +1,7 @@
 from flask_restx import Resource, fields, reqparse
 import services.user as user_service
 from api import api
-# import logging
+import logging
 from model.user import UserTypeEnum
 
 ns = api.namespace("user", title="User",description="CRUD for User")
@@ -21,6 +21,7 @@ parser.add_argument('name')
 @ns.route('')
 class User(Resource):
 
+    @api.marshal_list_with(model)
     def get(self):        
         try:
             args = parser.parse_args()
@@ -32,16 +33,13 @@ class User(Resource):
                 
         except BaseException as e:
             err_s = '{} - {} - {}'.format(type(e), e.args,e)
-            logging.error(err_s)
-            return err_s, 400
+            return {'error':err_s}, 400
 
-    @api.marshal_with(model)
+    
     def post(self):
         try:
-            logging.info(api.payload)
-            return user_service.save(api.payload), 200
+            return user_service.create_user(api.payload), 200
         except BaseException as e:
             err_s = '{} - {} - {}'.format(type(e), e.args,e)
-            logging.error(err_s)
-            return err_s, 400
+            return {'error':err_s}, 400
         

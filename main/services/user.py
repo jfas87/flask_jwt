@@ -1,28 +1,29 @@
-import logging
-from model.user import User
+from model.user import User, UserTypeEnum
 from db import db
 from schema.schemas import user_schema, user_schema_list
-import logging
-
-def save(data):
-
-    user = user_schema.load(data)
-    logging.info(User)
-    if(user.id):
-        db.session.add(user)
-    else:
-        db.session.merge(user)
-    db.session.commit()
-    # return user_schema.dump(user)
-    return user
+from sqlalchemy import or_
+# import logging
 
 def getAll():
-    return user_schema_list.dump(User.query.all())
+    return User.query.all()
 
 def getBy(args):
-    logging.info('args'.format(args))
-    r = User.query.where(User.id == args['id']).first()
-    return user_schema.dump(r)
+    return User.query.where(User.id == args['id']).first()
+
+def create_user(data):
+
+    user_db = db.session.query(User).filter(or_(User.name == data['name'], User.email == data['email'])).first()
+    
+    if user_db : raise Exception('A user with the same login and\or email already exists!')
+    
+    user = user_schema.load(data)
+    if user.user_type == UserTypeEnum.TEST:
+        test_user = db.session.query(User).filter(User.user_type == UserTypeEnum.TEST).first()
+        if test_user : raise Exception('A TEST type user already exists!')
+    db.session.add(user)
+    db.session.commit()
+    
+    return user_schema.dump(user)
 
 def validate_user(user):
     # db.session. verificar dados de usuário.
