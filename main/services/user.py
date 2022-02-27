@@ -2,6 +2,7 @@ from model.user import User, UserTypeEnum
 from db import db
 from schema.schemas import user_schema, user_schema_list
 from sqlalchemy import or_
+from services.auth import token_encode 
 # import logging
 
 def getAll():
@@ -25,6 +26,15 @@ def create_user(data):
     
     return user_schema.dump(user)
 
-def validate_user(user):
-    # db.session. verificar dados de usuário.
-    return True
+def authenticate(data):
+
+    user = user_schema.load(data)
+    user_db = db.session.query(User).filter(or_(User.name == data['name'], User.email == data['email'])).first()
+    if(user_db is None):
+        raise Exception('This user does not exists!')
+    if(user.user_type != user_db.user_type):
+        raise Exception('Please set the proper user type!')
+    if(user_db.pswd == user.pswd):
+        return token_encode(data)
+    else:
+        raise Exception('Invalid user\name\pswd!')
