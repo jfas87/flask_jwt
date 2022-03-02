@@ -2,14 +2,13 @@ from model.user import User, UserTypeEnum
 from db import db
 from schema.schemas import user_schema, user_schema_list
 from sqlalchemy import or_
-from services.auth import token_encode 
 # import logging
 
 def getAll():
     return User.query.all()
 
 def getBy(args):
-    return User.query.where(User.id == args['id']).first()
+    return User.query.where(User.id == args['id'])
 
 def create_user(data):
 
@@ -35,6 +34,6 @@ def authenticate(data):
     if(user.user_type != user_db.user_type):
         raise Exception('Please set the proper user type!')
     if(user_db.pswd == user.pswd):
-        return token_encode(data)
+        return True
     else:
         raise Exception('Invalid user\name\pswd!')

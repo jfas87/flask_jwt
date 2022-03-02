@@ -1,5 +1,6 @@
 from flask_restx import Resource, reqparse
 import services.user as user_service
+from services.auth import token_valdation
 from controller.model import user_model
 from api import api
 # import logging
@@ -13,6 +14,7 @@ parser.add_argument('id')
 class User(Resource):
 
     @api.marshal_list_with(user_model)
+    @token_valdation
     def get(self):        
         try:
             args = parser.parse_args()
@@ -27,6 +29,7 @@ class User(Resource):
             return {'error':err_s}, 400
 
     @api.marshal_with(user_model)
+    @token_valdation
     def post(self):
         try:
             return user_service.create_user(api.payload), 200

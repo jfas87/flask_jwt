@@ -1,7 +1,7 @@
 from flask_restx import Resource
 from api import api
 from controller.model import user_model
-from services.user import authenticate
+from services.auth import create_token
 import logging
 
 ns = api.namespace('auth', description= 'Manage JWT Token')
@@ -11,7 +11,7 @@ class AuthUser(Resource):
 
     def post(self):
         try:
-            return authenticate(api.payload), 200
+            return create_token(api.payload), 200
         except BaseException as e:
             err_s = '{} - {} - {}'.format(type(e), e.args,e)
             logging.info(err_s)
