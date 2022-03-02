@@ -15,3 +15,6 @@ def test_token_encode():
 def test_token_decode():
     r = post(url = base_url + 'decode', json = token_s)
     assert payload_encode == r.json()
+
+def test_user_with_token_header():
+    assert 1 == 1
