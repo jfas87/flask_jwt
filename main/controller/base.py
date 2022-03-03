@@ -1,6 +1,5 @@
 from flask_restx import Resource
 from services.auth import token_valdation
-import logging
 
 class BaseResource(Resource):
 
@@ -9,7 +8,7 @@ class BaseResource(Resource):
             if token_valdation() : 
                 return func , 200
         except BaseException as e:
-            #need to enhanced so for better troubleshooting
+            #add more info 
             err_s = '{} - {} - {}'.format(type(e), e.args,e)
             return {'error':err_s}, 400
 

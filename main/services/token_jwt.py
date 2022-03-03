@@ -1,5 +1,4 @@
 import jwt
-import logging
 from functools import wraps
 from flask import request
 from services.user import authenticate
