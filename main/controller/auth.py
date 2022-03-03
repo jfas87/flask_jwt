@@ -1,7 +1,7 @@
 from flask_restx import Resource
 from api import api
 from controller.model import user_model
-from services.auth import create_token
+from services.token_jwt import create_token
 import logging
 
 ns = api.namespace('auth', description= 'Manage JWT Token')
