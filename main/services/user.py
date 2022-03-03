@@ -2,13 +2,13 @@ from model.user import User, UserTypeEnum
 from db import db
 from schema.schemas import user_schema, user_schema_list
 from sqlalchemy import or_
-# import logging
 
 def getAll():
-    return User.query.all()
+    return User.query.all()  
 
 def getBy(args):
     return User.query.where(User.id == args['id'])
+
 
 def create_user(data):
 
@@ -26,7 +26,6 @@ def create_user(data):
     return user_schema.dump(user)
 
 def authenticate(data):
-
     user = user_schema.load(data)
     user_db = db.session.query(User).filter(or_(User.name == data['name'], User.email == data['email'])).first()
     if(user_db is None):

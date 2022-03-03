@@ -18,7 +18,4 @@ def create_token(data):
         return token_encode(data)
 
 def validate_token(data):
-    logging.info('jwt {}'.format(data))
-    user = token_decode(data)
-    logging.info('jwt user {}'.format(user))
-    return authenticate(user)
+    return authenticate(token_decode(data))
