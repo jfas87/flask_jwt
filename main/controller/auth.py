@@ -13,6 +13,6 @@ class AuthUser(Resource):
         try:
             return create_token(api.payload), 200
         except BaseException as e:
-            err_s = '{} - {} - {}'.format(type(e), e.args,e)
+            err_s = f'{type(e)} - {e.args} - {e}'
             logging.info(err_s)
             return { 'error' : err_s }, 400

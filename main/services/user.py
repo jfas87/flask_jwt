@@ -28,11 +28,8 @@ def create_user(data):
 def authenticate(data):
     user = user_schema.load(data)
     user_db = db.session.query(User).filter(or_(User.name == data['name'], User.email == data['email'])).first()
-    if(user_db is None):
-        raise Exception('This user does not exists!')
-    if(user.user_type != user_db.user_type):
-        raise Exception('Please set the proper user type!')
-    if(user_db.pswd == user.pswd):
-        return True
-    else:
-        raise Exception('Invalid user\name\pswd!')
+    if(user_db):
+        if(user.user_type != user_db.user_type | user_db.pswd != user.pswd ):
+            raise Exception('Invalid token')
+        else:
+            return True
