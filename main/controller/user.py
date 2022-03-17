@@ -14,7 +14,7 @@ class UserList(BaseResource):
 
     @ns.marshal_list_with(user_model)
     def get(self):        
-        return super(User, self).get(user_service.getAll())
+        return super(UserList, self).get(user_service.getAll())
 
 @ns.route('')
 class User(BaseResource):
